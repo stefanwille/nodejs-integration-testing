@@ -2,6 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 
+const books = require('./books')
+
 const port = 8080;
 const app = express();
 
@@ -17,7 +19,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.text());
 app.use(bodyParser.json({ type: 'application/json'}));
 
-app.get("/", (req, res) => res.json({message: "Welcome to our Bookstore!"}));
+books.addRoutes(app)
 
 app.listen(port);
 console.log("Listening on port " + port);
