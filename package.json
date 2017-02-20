@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "NODE_ENV=development node src/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -11,7 +12,7 @@
     "url": "git+https://github.com/stefanwille/nodejs-integration-testing.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Stefan Wille",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/stefanwille/nodejs-integration-testing/issues"
@@ -24,7 +25,6 @@
   },
   "dependencies": {
     "body-parser": "^1.16.1",
-    "config": "^1.25.1",
     "express": "^4.14.1",
     "morgan": "^1.8.1"
   }
