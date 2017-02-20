@@ -8,7 +8,7 @@ const port = 8080
 const app = express()
 
 // Don't show the log when in test env
-if(process.env['NODE_ENV'] === 'test') {
+if(process.env['NODE_ENV'] !== 'test') {
     // Use morgan to log to command line
     app.use(morgan('combined'))
 }

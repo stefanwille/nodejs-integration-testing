@@ -10,9 +10,16 @@ chai.use(chaiHttp)
 
 describe('/books', function() {
   describe('GET /', function() {
-    it('works', function() {
-      expect(3).to.equal(4)
+    it('works', function(done) {
+      chai.request(server)
+        .get('/')
+        .end(function(err, res) {
+          if(err) {
+            throw err
+          }
+          expect(res.body.books).to.eql([3, 4, 5])
+          done()
+        })
     })
   })
 })
-

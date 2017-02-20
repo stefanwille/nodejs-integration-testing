@@ -1,6 +1,6 @@
 
 function index(request, response) {
-  response.json({message: 'Welcome to our Bookstore!'})
+  response.json({books: [3, 4, 5]})
 }
 
 function addRoutes(app) {
