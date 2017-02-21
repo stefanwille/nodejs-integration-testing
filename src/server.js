@@ -2,7 +2,8 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
 
-const books = require('./books')
+const { Book } = require('./models')
+const { addRoutes } = require('./routes')
 
 const port = 8080
 const app = express()
@@ -19,7 +20,16 @@ app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.text())
 app.use(bodyParser.json({ type: 'application/json'}))
 
-books.addRoutes(app)
+addRoutes(app)
+
+// Book.create({
+//   title: 'Sancho Panzer',
+//   author: 'Estilo Moderno'
+// })
+// .then(Book.create({
+//   title: 'Contra el Miedo',
+//   author: 'Frodo Padrino'
+// }))
 
 app.listen(port)
 console.log("Listening on port " + port)
