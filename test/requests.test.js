@@ -1,26 +1,41 @@
 process.env.NODE_ENV = 'test'
 
 const chai = require('chai')
-const chaiHttp = require('chai-http')
 const expect = chai.expect
-const models = require('../src/models')
+const chaiHttp = require('chai-http')
 
 const server = require('../src/server')
+const { resetDatabase, Book } = require('../src/models')
 
 chai.use(chaiHttp)
 
-resetDatabase
-
 describe('/books', function() {
+  before(function(done) {
+    resetDatabase()
+    .then(function() {
+      done()
+    })
+    .catch(function(error) {
+      done(error)
+    })
+  })
+
   describe('GET /', function() {
+    beforeEach(function(done) {
+      Book.create({title: 'Some title', author: 'Algun author'})
+      .then(function() {
+        done()
+      })
+    })
+
     it('works', function(done) {
       chai.request(server)
         .get('/')
-        .end(function(err, res) {
-          if(err) {
-            throw err
+        .end(function(error, response) {
+          if(error) {
+            throw error
           }
-          expect(res.body.books).to.eql([3, 4, 5])
+          expect(response.body.books).to.deep.equal([{title: 'Some title', author: 'Algun author'}])
           done()
         })
     })
