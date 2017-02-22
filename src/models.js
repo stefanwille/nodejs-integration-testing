@@ -1,6 +1,8 @@
+const config = require('config')
 const Sequelize = require('sequelize')
 
-const sequelize = new Sequelize('postgres://stefan:@localhost:5432/sequelize_development');
+const databaseUrl = config.databaseUrl
+const sequelize = new Sequelize(databaseUrl)
 
 const Book = sequelize.define('books', {
   title: {
@@ -13,7 +15,7 @@ const Book = sequelize.define('books', {
   }
 }, {
   freezeTableName: true
-});
+})
 
 function resetDatabase() {
   return Book.destroy({where: {}})

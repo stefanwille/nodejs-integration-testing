@@ -1,0 +1,4 @@
+{
+  "port": 8080,
+  "databaseUrl": "postgres://stefan:@localhost:5432/sequelize_development"
+}

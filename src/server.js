@@ -1,11 +1,11 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
+const config = require('config')
 
 const { Book } = require('./models')
 const { addRoutes } = require('./routes')
 
-const port = 8080
 const app = express()
 
 // Don't show the log when in test env
@@ -31,6 +31,7 @@ addRoutes(app)
 //   author: 'Frodo Padrino'
 // }))
 
+const port = config.port
 app.listen(port)
 console.log("Listening on port " + port)
 
