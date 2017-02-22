@@ -127,4 +127,31 @@ describe('/books', function() {
         })
     })
   })
+
+  describe('DELETE /books/:id (= destroy)', function() {
+    let book
+    beforeEach(function(done) {
+      Book.create({title: 'Original title', author: 'Original author'})
+      .then(function(newBook) {
+        book = newBook
+        done()
+      })
+    })
+
+    it('works', function(done) {
+      chai.request(server)
+        .delete(`/books/${book.id}`)
+        .send({ book: {title: 'Updated title'} })
+        .end(function(error, response) {
+          expect(error).to.be.null
+          expect(response.status).to.equal(200)
+          expect(response.body).to.deep.equal({})
+          Book.findById(book.id)
+            .then(function(loadedBook) {
+              expect(loadedBook).to.be.null
+              done()
+            })
+        })
+    })
+  })
 })

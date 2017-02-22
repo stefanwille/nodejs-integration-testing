@@ -54,11 +54,27 @@ function update(request, response) {
     })
 }
 
+function destroy(request, response) {
+  Book.findById(request.params.id)
+    .then(function(book) {
+      if (!book) {
+        response.status(404)
+        return
+      }
+
+      return book.destroy()
+    })
+    .then(function() {
+      response.json({})
+    })
+}
+
 function addRoutes(app) {
   app.get('/books', index)
   app.get('/books/:id', show)
   app.post('/books', create)
   app.patch('/books/:id', update)
+  app.delete('/books/:id', destroy)
 }
 
 module.exports = {
