@@ -58,5 +58,16 @@ describe('/books', function() {
           done()
         })
     })
+
+    it('returns status 404 when not found', function(done) {
+      chai.request(server)
+        .get('/books/090909')
+        .end(function(error, response) {
+          expect(error.message).to.equal('Not Found')
+          expect(response.body).to.deep.equal({error: 'NOT_FOUND'})
+          expect(response.status).to.equal(404)
+          done()
+        })
+    })
   })
 })

@@ -11,7 +11,12 @@ function index(request, response) {
 function show(request, response) {
   const id = request.params.id
   Book.findById(id, {attributes: ['title', 'author']}).then(function(book) {
-    response.json({book: book})
+    if (book) {
+      response.json({book: book})
+    } else {
+      response.status(404).json({error: 'NOT_FOUND'})
+
+    }
   })
 }
 
