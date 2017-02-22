@@ -94,4 +94,37 @@ describe('/books', function() {
         })
     })
   })
+
+  describe('PATCH /books/:id (= update)', function() {
+    let book
+    beforeEach(function(done) {
+      Book.create({title: 'Original title', author: 'Original author'})
+      .then(function(newBook) {
+        book = newBook
+        done()
+      })
+    })
+
+    it('works', function(done) {
+      chai.request(server)
+        .patch(`/books/${book.id}`)
+        .send({ book: {title: 'Updated title'} })
+        .end(function(error, response) {
+          expect(error).to.be.null
+          expect(response.status).to.equal(200)
+          expect(response.body.book).to.deep.include({
+            title: 'Updated title',
+            author: 'Original author'
+          })
+          Book.findById(book.id)
+            .then(function(loadedBook) {
+              expect(loadedBook).to.deep.include({
+                title: 'Updated title',
+                author: 'Original author'
+              })
+              done()
+            })
+        })
+    })
+  })
 })

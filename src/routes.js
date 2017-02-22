@@ -1,3 +1,4 @@
+const R = require('ramda')
 const { Book } = require('./models')
 
 function index(request, response) {
@@ -34,10 +35,30 @@ function create(request, response) {
   })
 }
 
+function update(request, response) {
+  let updatedBook
+  Book.findById(request.params.id)
+    .then(function(book) {
+      if (!book) {
+        response.status(404)
+        return
+      }
+
+      const attributes = R.pick(['title', 'author'], request.body.book)
+      Object.assign(book, attributes)
+      updatedBook = book
+      return book.save()
+    })
+    .then(function() {
+      response.json({book: updatedBook})
+    })
+}
+
 function addRoutes(app) {
   app.get('/books', index)
   app.get('/books/:id', show)
   app.post('/books', create)
+  app.patch('/books/:id', update)
 }
 
 module.exports = {
