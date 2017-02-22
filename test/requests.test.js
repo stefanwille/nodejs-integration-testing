@@ -20,7 +20,7 @@ describe('/books', function() {
     })
   })
 
-  describe('GET /', function() {
+  describe('GET /books', function() {
     beforeEach(function(done) {
       Book.create({title: 'Some title', author: 'Algun author'})
       .then(function() {
@@ -30,7 +30,7 @@ describe('/books', function() {
 
     it('works', function(done) {
       chai.request(server)
-        .get('/')
+        .get('/books')
         .end(function(error, response) {
           expect(error).to.be.null
           expect(response.body.books).to.deep.equal([{title: 'Some title', author: 'Algun author'}])

@@ -9,7 +9,7 @@ function index(request, response) {
 }
 
 function addRoutes(app) {
-  app.get('/', index);
+  app.get('/books', index);
 }
 
 module.exports = {
