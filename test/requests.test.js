@@ -32,9 +32,7 @@ describe('/books', function() {
       chai.request(server)
         .get('/')
         .end(function(error, response) {
-          if(error) {
-            throw error
-          }
+          expect(error).to.be.null
           expect(response.body.books).to.deep.equal([{title: 'Some title', author: 'Algun author'}])
           done()
         })
