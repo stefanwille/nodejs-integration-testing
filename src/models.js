@@ -18,7 +18,7 @@ const Book = sequelize.define('books', {
 })
 
 function resetDatabase() {
-  return Book.destroy({where: {}})
+  return Book.truncate()
 }
 
 module.exports = {
