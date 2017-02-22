@@ -38,4 +38,25 @@ describe('/books', function() {
         })
     })
   })
+
+  describe('GET /books/:id', function() {
+    let book
+    beforeEach(function(done) {
+      Book.create({title: 'Other title', author: 'Other author'})
+      .then(function(newBook) {
+        book = newBook
+        done()
+      })
+    })
+
+    it('works', function(done) {
+      chai.request(server)
+        .get(`/books/${book.id}`)
+        .end(function(error, response) {
+          expect(error).to.be.null
+          expect(response.body.book).to.deep.equal({title: 'Other title', author: 'Other author'})
+          done()
+        })
+    })
+  })
 })

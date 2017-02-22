@@ -8,8 +8,16 @@ function index(request, response) {
   })
 }
 
+function show(request, response) {
+  const id = request.params.id
+  Book.findById(id, {attributes: ['title', 'author']}).then(function(book) {
+    response.json({book: book})
+  })
+}
+
 function addRoutes(app) {
   app.get('/books', index);
+  app.get('/books/:id', show);
 }
 
 module.exports = {
