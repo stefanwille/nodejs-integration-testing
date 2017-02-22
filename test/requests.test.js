@@ -116,9 +116,9 @@ describe('/books', function() {
             title: 'Updated title',
             author: 'Original author'
           })
-          Book.findById(book.id)
-            .then(function(loadedBook) {
-              expect(loadedBook).to.deep.include({
+          book.reload()
+            .then(function() {
+              expect(book).to.deep.include({
                 title: 'Updated title',
                 author: 'Original author'
               })
