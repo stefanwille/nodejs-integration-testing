@@ -61,12 +61,36 @@ describe('/books', function() {
 
     it('returns status 404 when not found', function(done) {
       chai.request(server)
-        .get('/books/090909')
+        .get('/books/12345')
         .end(function(error, response) {
           expect(error.message).to.equal('Not Found')
           expect(response.body).to.deep.equal({error: 'NOT_FOUND'})
           expect(response.status).to.equal(404)
           done()
+        })
+    })
+  })
+
+  describe('POST /books (= create)', function() {
+    it('works', function(done) {
+      chai.request(server)
+        .post('/books')
+        .send({ book: {title: 'Creator title', author: 'Creator author'} })
+        .end(function(error, response) {
+          expect(error).to.be.null
+          expect(response.body.book.id).not.to.be.null
+          expect(response.body.book).to.deep.include({
+            title: 'Creator title',
+            author: 'Creator author'
+          })
+          Book.findById(response.body.book.id)
+            .then(function(loadedBook) {
+              expect(loadedBook).to.deep.include({
+                title: 'Creator title',
+                author: 'Creator author'
+              })
+              done()
+            })
         })
     })
   })

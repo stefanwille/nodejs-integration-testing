@@ -20,9 +20,24 @@ function show(request, response) {
   })
 }
 
+function create(request, response) {
+  const attributes = {
+    title: request.body.book.title,
+    author: request.body.book.author
+  }
+  Book.create(attributes).then(function(book) {
+    if (book) {
+      response.json({book: book})
+    } else {
+      response.status(500)
+    }
+  })
+}
+
 function addRoutes(app) {
-  app.get('/books', index);
-  app.get('/books/:id', show);
+  app.get('/books', index)
+  app.get('/books/:id', show)
+  app.post('/books', create)
 }
 
 module.exports = {
