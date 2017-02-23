@@ -10,7 +10,7 @@ const { resetDatabase, Book } = require('../src/models')
 chai.use(chaiHttp)
 
 describe('/books', function() {
-  before(function(done) {
+  beforeEach(function(done) {
     resetDatabase()
     .then(function() {
       done()

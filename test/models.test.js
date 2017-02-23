@@ -3,9 +3,19 @@ process.env.NODE_ENV = 'test'
 const chai = require('chai')
 const expect = chai.expect
 
-const { resetDatabase, Book } = require('../src/models')
+const { resetDatabase, syncDatabase, Book } = require('../src/models')
 
 describe('Book', function() {
+  before(function(done) {
+    syncDatabase()
+    .then(function() {
+      done()
+    })
+    .catch(function(error) {
+      done(error)
+    })
+  })
+
   beforeEach(function(done) {
     resetDatabase()
     .then(function() {

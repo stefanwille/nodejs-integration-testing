@@ -21,7 +21,12 @@ function resetDatabase() {
   return Book.truncate()
 }
 
+function syncDatabase() {
+  return Book.sync({force: true})
+}
+
 module.exports = {
   resetDatabase,
+  syncDatabase,
   Book
 }
