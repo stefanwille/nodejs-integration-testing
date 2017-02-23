@@ -6,12 +6,12 @@ const sequelize = new Sequelize(databaseUrl)
 
 const Book = sequelize.define('books', {
   title: {
-    type: Sequelize.STRING,
-    field: 'title'
+    type: Sequelize.STRING
   },
+
   author: {
     type: Sequelize.STRING,
-    field: 'author'
+    allowNull: false,
   }
 }, {
   freezeTableName: true
