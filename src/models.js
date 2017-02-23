@@ -1,8 +1,13 @@
 const config = require('config')
 const Sequelize = require('sequelize')
+const winston = require('winston')
+
+const logToWinston = function(str) { winston.info(str) }
 
 const databaseUrl = config.databaseUrl
-const sequelize = new Sequelize(databaseUrl)
+const sequelize = new Sequelize(databaseUrl, {
+  logging: logToWinston
+})
 
 const Book = sequelize.define('books', {
   title: {
