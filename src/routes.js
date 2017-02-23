@@ -1,3 +1,4 @@
+const express = require('express')
 const R = require('ramda')
 const { Book } = require('./models')
 
@@ -69,14 +70,16 @@ function destroy(request, response) {
     })
 }
 
-function addRoutes(app) {
-  app.get('/books', index)
-  app.get('/books/:id', show)
-  app.post('/books', create)
-  app.patch('/books/:id', update)
-  app.delete('/books/:id', destroy)
+function getRouter() {
+  const router = express.Router()
+  router.get('/books', index)
+  router.get('/books/:id', show)
+  router.post('/books', create)
+  router.patch('/books/:id', update)
+  router.delete('/books/:id', destroy)
+  return router
 }
 
 module.exports = {
-  addRoutes
+  getRouter
 }

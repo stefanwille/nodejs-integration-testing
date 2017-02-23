@@ -4,7 +4,7 @@ const morgan = require('morgan')
 const config = require('config')
 
 const { Book } = require('./models')
-const { addRoutes } = require('./routes')
+const { getRouter } = require('./routes')
 
 const app = express()
 
@@ -20,19 +20,10 @@ app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.text())
 app.use(bodyParser.json({ type: 'application/json'}))
 
-addRoutes(app)
-
-// Book.create({
-//   title: 'Sancho Panzer',
-//   author: 'Estilo Moderno'
-// })
-// .then(Book.create({
-//   title: 'Contra el Miedo',
-//   author: 'Frodo Padrino'
-// }))
+app.use(getRouter())
 
 const port = config.port
 app.listen(port)
-console.log("Listening on port " + port)
+console.log('Listening on port ' + port)
 
 module.exports = app  // for testing
