@@ -1,3 +1,3 @@
 # Node.js Integration Testing
 
-REST API based Express.js and Sequelize, tested with Mocha and Chai.
+A Express.js and Sequelize based REST API, tested with Mocha and Chai.
