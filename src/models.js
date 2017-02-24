@@ -10,7 +10,7 @@ const sequelize = new Sequelize(databaseUrl, {
   underscoredAll: true
 })
 
-const Book = sequelize.define('Books', {
+const Book = sequelize.define('books', {
   title: {
     type: Sequelize.STRING
   },

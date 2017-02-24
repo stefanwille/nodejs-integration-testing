@@ -5,7 +5,7 @@ const expect = chai.expect
 
 const { resetDatabase, syncDatabase, Book } = require('../src/models')
 
-describe('Book', function() {
+describe('Book model', function() {
   before(function(done) {
     syncDatabase()
     .then(function() {
@@ -26,7 +26,7 @@ describe('Book', function() {
     })
   })
 
-  describe('save and find', function() {
+  describe('save and findOne', function() {
     it('works', function(done) {
       Book.create({author: 'Ben Bekler', title: 'Soy el Señor'})
       .then(function(createdBook) {
@@ -67,7 +67,7 @@ describe('Book', function() {
   })
 
   describe('validation', function() {
-    it('finds invalid attributes', function(done) {
+    it('rejects invalid attributes', function(done) {
       Book.create({author: null, title: 'Soy el Señor'})
       .then(function(createdBook) {
         done(new Error('Should raise a validation error'))
