@@ -43,6 +43,29 @@ describe('Book', function() {
     })
   })
 
+  describe('where', function() {
+    it('finds only rows for the given condition', function(done) {
+      Promise.all([
+          Book.create({author: 'AAA', title: 'BBB'}),
+          Book.create({author: 'CCC', title: 'DDD'})
+        ])
+      .then(function() {
+        return Book.count()
+      })
+      .then(function(bookCount) {
+        expect(bookCount).to.equal(2)
+        return Book.findAll({where: { author: 'CCC' } })
+      })
+      .then(function(books) {
+        expect(books.length).to.equal(1)
+        done()
+      })
+      .catch(function(error) {
+        done(error)
+      })
+    })
+  })
+
   describe('validation', function() {
     it('finds invalid attributes', function(done) {
       Book.create({author: null, title: 'Soy el Señor'})

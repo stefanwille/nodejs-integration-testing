@@ -6,10 +6,11 @@ const logToWinston = function(str) { winston.info(str) }
 
 const databaseUrl = config.databaseUrl
 const sequelize = new Sequelize(databaseUrl, {
-  logging: logToWinston
+  logging: logToWinston,
+  underscoredAll: true
 })
 
-const Book = sequelize.define('books', {
+const Book = sequelize.define('Books', {
   title: {
     type: Sequelize.STRING
   },
