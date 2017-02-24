@@ -6,25 +6,8 @@ const expect = chai.expect
 const { resetDatabase, syncDatabase, Book } = require('../src/models')
 
 describe('Book model', function() {
-  before(function(done) {
-    syncDatabase()
-    .then(function() {
-      done()
-    })
-    .catch(function(error) {
-      done(error)
-    })
-  })
-
-  beforeEach(function(done) {
-    resetDatabase()
-    .then(function() {
-      done()
-    })
-    .catch(function(error) {
-      done(error)
-    })
-  })
+  before(syncDatabase)
+  beforeEach(resetDatabase)
 
   describe('save and findOne', function() {
     it('works', function() {

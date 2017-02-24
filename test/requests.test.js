@@ -10,22 +10,11 @@ const { resetDatabase, Book } = require('../src/models')
 chai.use(chaiHttp)
 
 describe('/books', function() {
-  beforeEach(function(done) {
-    resetDatabase()
-    .then(function() {
-      done()
-    })
-    .catch(function(error) {
-      done(error)
-    })
-  })
+  beforeEach(resetDatabase)
 
   describe('GET /books', function() {
-    beforeEach(function(done) {
-      Book.create({title: 'Some title', author: 'Algun author'})
-      .then(function() {
-        done()
-      })
+    beforeEach(function() {
+      return Book.create({title: 'Some title', author: 'Algun author'})
     })
 
     it('works', function() {
@@ -39,11 +28,10 @@ describe('/books', function() {
 
   describe('GET /books/:id', function() {
     let book
-    beforeEach(function(done) {
-      Book.create({title: 'Other title', author: 'Other author'})
+    beforeEach(function() {
+      return Book.create({title: 'Other title', author: 'Other author'})
       .then(function(newBook) {
         book = newBook
-        done()
       })
     })
 
@@ -91,11 +79,10 @@ describe('/books', function() {
 
   describe('PATCH /books/:id (= update)', function() {
     let book
-    beforeEach(function(done) {
-      Book.create({title: 'Original title', author: 'Original author'})
+    beforeEach(function() {
+      return Book.create({title: 'Original title', author: 'Original author'})
       .then(function(newBook) {
         book = newBook
-        done()
       })
     })
 
@@ -122,11 +109,10 @@ describe('/books', function() {
 
   describe('DELETE /books/:id (= destroy)', function() {
     let book
-    beforeEach(function(done) {
-      Book.create({title: 'Original title', author: 'Original author'})
+    beforeEach(function() {
+      return Book.create({title: 'Original title', author: 'Original author'})
       .then(function(newBook) {
         book = newBook
-        done()
       })
     })
 
