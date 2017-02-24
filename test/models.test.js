@@ -27,8 +27,8 @@ describe('Book model', function() {
   })
 
   describe('save and findOne', function() {
-    it('works', function(done) {
-      Book.create({author: 'Ben Bekler', title: 'Soy el Señor'})
+    it('works', function() {
+      return Book.create({author: 'Ben Bekler', title: 'Soy el Señor'})
       .then(function(createdBook) {
         expect(createdBook.author).to.equal('Ben Bekler')
         expect(createdBook.title).to.equal('Soy el Señor')
@@ -37,15 +37,14 @@ describe('Book model', function() {
           expect(foundBook.author).to.equal('Ben Bekler')
           expect(foundBook.title).to.equal('Soy el Señor')
           expect(foundBook.id).to.equal(createdBook.id)
-          done()
         })
       })
     })
   })
 
   describe('where', function() {
-    it('finds only rows for the given condition', function(done) {
-      Promise.all([
+    it('finds only rows for the given condition', function() {
+      return Promise.all([
           Book.create({author: 'AAA', title: 'BBB'}),
           Book.create({author: 'CCC', title: 'DDD'})
         ])
@@ -58,10 +57,6 @@ describe('Book model', function() {
       })
       .then(function(books) {
         expect(books.length).to.equal(1)
-        done()
-      })
-      .catch(function(error) {
-        done(error)
       })
     })
   })

@@ -28,13 +28,11 @@ describe('/books', function() {
       })
     })
 
-    it('works', function(done) {
-      chai.request(server)
+    it('works', function() {
+      return chai.request(server)
         .get('/books')
-        .end(function(error, response) {
-          expect(error).to.be.null
+        .then(function(response) {
           expect(response.body.books).to.deep.equal([{title: 'Some title', author: 'Algun author'}])
-          done()
         })
     })
   })
@@ -49,13 +47,11 @@ describe('/books', function() {
       })
     })
 
-    it('works', function(done) {
-      chai.request(server)
+    it('works', function() {
+      return chai.request(server)
         .get(`/books/${book.id}`)
-        .end(function(error, response) {
-          expect(error).to.be.null
+        .then(function(response) {
           expect(response.body.book).to.deep.equal({title: 'Other title', author: 'Other author'})
-          done()
         })
     })
 
@@ -72,25 +68,23 @@ describe('/books', function() {
   })
 
   describe('POST /books (= create)', function() {
-    it('works', function(done) {
-      chai.request(server)
+    it('works', function() {
+      return chai.request(server)
         .post('/books')
         .send({ book: {title: 'Creator title', author: 'Creator author'} })
-        .end(function(error, response) {
-          expect(error).to.be.null
+        .then(function(response) {
           expect(response.body.book.id).not.to.be.null
           expect(response.body.book).to.deep.include({
             title: 'Creator title',
             author: 'Creator author'
           })
-          Book.findById(response.body.book.id)
-            .then(function(loadedBook) {
-              expect(loadedBook).to.deep.include({
-                title: 'Creator title',
-                author: 'Creator author'
-              })
-              done()
-            })
+          return Book.findById(response.body.book.id)
+        })
+        .then(function(loadedBook) {
+          expect(loadedBook).to.deep.include({
+            title: 'Creator title',
+            author: 'Creator author'
+          })
         })
     })
   })
@@ -105,25 +99,23 @@ describe('/books', function() {
       })
     })
 
-    it('works', function(done) {
-      chai.request(server)
+    it('works', function() {
+      return chai.request(server)
         .patch(`/books/${book.id}`)
         .send({ book: {title: 'Updated title'} })
-        .end(function(error, response) {
-          expect(error).to.be.null
+        .then(function(response) {
           expect(response.status).to.equal(200)
           expect(response.body.book).to.deep.include({
             title: 'Updated title',
             author: 'Original author'
           })
-          book.reload()
-            .then(function() {
-              expect(book).to.deep.include({
-                title: 'Updated title',
-                author: 'Original author'
-              })
-              done()
-            })
+          return book.reload()
+        })
+        .then(function() {
+          expect(book).to.deep.include({
+            title: 'Updated title',
+            author: 'Original author'
+          })
         })
     })
   })
@@ -138,19 +130,17 @@ describe('/books', function() {
       })
     })
 
-    it('works', function(done) {
-      chai.request(server)
+    it('works', function() {
+      return chai.request(server)
         .delete(`/books/${book.id}`)
         .send({ book: {title: 'Updated title'} })
-        .end(function(error, response) {
-          expect(error).to.be.null
+        .then(function(response) {
           expect(response.status).to.equal(200)
           expect(response.body).to.deep.equal({})
-          Book.findById(book.id)
-            .then(function(loadedBook) {
-              expect(loadedBook).to.be.null
-              done()
-            })
+          return Book.findById(book.id)
+        })
+        .then(function(loadedBook) {
+          expect(loadedBook).to.be.null
         })
     })
   })
