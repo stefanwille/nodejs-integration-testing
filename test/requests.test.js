@@ -9,38 +9,31 @@ const { resetDatabase, Book } = require('../src/models')
 
 chai.use(chaiHttp)
 
-describe('/books', function() {
+describe('/books requests', function() {
   beforeEach(resetDatabase)
 
   describe('GET /books', function() {
-    beforeEach(function() {
-      return Book.create({title: 'Some title', author: 'Algun author'})
+    beforeEach(async function() {
+      await Book.create({title: 'Some title', author: 'Algun author'})
     })
 
-    it('works', function() {
-      return chai.request(server)
+    it('works', async function() {
+      const response = await chai.request(server)
         .get('/books')
-        .then(function(response) {
-          expect(response.body.books).to.deep.equal([{title: 'Some title', author: 'Algun author'}])
-        })
+      expect(response.body.books).to.deep.equal([{title: 'Some title', author: 'Algun author'}])
     })
   })
 
   describe('GET /books/:id', function() {
     let book
-    beforeEach(function() {
-      return Book.create({title: 'Other title', author: 'Other author'})
-      .then(function(newBook) {
-        book = newBook
-      })
+    beforeEach(async function() {
+      book = await Book.create({title: 'Other title', author: 'Other author'})
     })
 
-    it('works', function() {
-      return chai.request(server)
+    it('works', async function() {
+      const response = await chai.request(server)
         .get(`/books/${book.id}`)
-        .then(function(response) {
-          expect(response.body.book).to.deep.equal({title: 'Other title', author: 'Other author'})
-        })
+      expect(response.body.book).to.deep.equal({title: 'Other title', author: 'Other author'})
     })
 
     it('returns status 404 when not found', function(done) {
@@ -56,78 +49,60 @@ describe('/books', function() {
   })
 
   describe('POST /books (= create)', function() {
-    it('works', function() {
-      return chai.request(server)
+    it('works', async function() {
+      const response = await chai.request(server)
         .post('/books')
         .send({ book: {title: 'Creator title', author: 'Creator author'} })
-        .then(function(response) {
-          expect(response.body.book.id).not.to.be.null
-          expect(response.body.book).to.deep.include({
-            title: 'Creator title',
-            author: 'Creator author'
-          })
-          return Book.findById(response.body.book.id)
-        })
-        .then(function(loadedBook) {
-          expect(loadedBook).to.deep.include({
-            title: 'Creator title',
-            author: 'Creator author'
-          })
-        })
+      expect(response.body.book.id).not.to.be.null
+      expect(response.body.book).to.deep.include({
+        title: 'Creator title',
+        author: 'Creator author'
+      })
+      const loadedBook = await Book.findById(response.body.book.id)
+      expect(loadedBook).to.deep.include({
+        title: 'Creator title',
+        author: 'Creator author'
+      })
     })
   })
 
   describe('PATCH /books/:id (= update)', function() {
     let book
-    beforeEach(function() {
-      return Book.create({title: 'Original title', author: 'Original author'})
-      .then(function(newBook) {
-        book = newBook
-      })
+    beforeEach(async function() {
+      book = await Book.create({title: 'Original title', author: 'Original author'})
     })
 
-    it('works', function() {
-      return chai.request(server)
+    it('works', async function() {
+      const response = await chai.request(server)
         .patch(`/books/${book.id}`)
         .send({ book: {title: 'Updated title'} })
-        .then(function(response) {
-          expect(response.status).to.equal(200)
-          expect(response.body.book).to.deep.include({
-            title: 'Updated title',
-            author: 'Original author'
-          })
-          return book.reload()
-        })
-        .then(function() {
-          expect(book).to.deep.include({
-            title: 'Updated title',
-            author: 'Original author'
-          })
-        })
+      expect(response.status).to.equal(200)
+      expect(response.body.book).to.deep.include({
+        title: 'Updated title',
+        author: 'Original author'
+      })
+      await book.reload()
+      expect(book).to.deep.include({
+        title: 'Updated title',
+        author: 'Original author'
+      })
     })
   })
 
   describe('DELETE /books/:id (= destroy)', function() {
     let book
-    beforeEach(function() {
-      return Book.create({title: 'Original title', author: 'Original author'})
-      .then(function(newBook) {
-        book = newBook
-      })
+    beforeEach(async function() {
+      book = await Book.create({title: 'Original title', author: 'Original author'})
     })
 
-    it('works', function() {
-      return chai.request(server)
+    it('works', async function() {
+      const response = await chai.request(server)
         .delete(`/books/${book.id}`)
         .send({ book: {title: 'Updated title'} })
-        .then(function(response) {
-          expect(response.status).to.equal(200)
-          expect(response.body).to.deep.equal({})
-          return Book.findById(book.id)
-        })
-        .then(function(loadedBook) {
-          expect(loadedBook).to.be.null
-        })
+      expect(response.status).to.equal(200)
+      expect(response.body).to.deep.equal({})
+      const loadedBook = await Book.findById(book.id)
+      expect(loadedBook).to.be.null
     })
   })
 })
