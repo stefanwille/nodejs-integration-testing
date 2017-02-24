@@ -25,14 +25,13 @@ describe('/books requests', function() {
   })
 
   describe('GET /books/:id', function() {
-    let book
     beforeEach(async function() {
-      book = await Book.create({title: 'Other title', author: 'Other author'})
+      this.book = await Book.create({title: 'Other title', author: 'Other author'})
     })
 
     it('works', async function() {
       const response = await chai.request(server)
-        .get(`/books/${book.id}`)
+        .get(`/books/${this.book.id}`)
       expect(response.body.book).to.deep.equal({title: 'Other title', author: 'Other author'})
     })
 
@@ -67,22 +66,21 @@ describe('/books requests', function() {
   })
 
   describe('PATCH /books/:id (= update)', function() {
-    let book
     beforeEach(async function() {
-      book = await Book.create({title: 'Original title', author: 'Original author'})
+      this.book = await Book.create({title: 'Original title', author: 'Original author'})
     })
 
     it('works', async function() {
       const response = await chai.request(server)
-        .patch(`/books/${book.id}`)
+        .patch(`/books/${this.book.id}`)
         .send({ book: {title: 'Updated title'} })
       expect(response.status).to.equal(200)
       expect(response.body.book).to.deep.include({
         title: 'Updated title',
         author: 'Original author'
       })
-      await book.reload()
-      expect(book).to.deep.include({
+      await this.book.reload()
+      expect(this.book).to.deep.include({
         title: 'Updated title',
         author: 'Original author'
       })
@@ -90,18 +88,17 @@ describe('/books requests', function() {
   })
 
   describe('DELETE /books/:id (= destroy)', function() {
-    let book
     beforeEach(async function() {
-      book = await Book.create({title: 'Original title', author: 'Original author'})
+      this.book = await Book.create({title: 'Original title', author: 'Original author'})
     })
 
     it('works', async function() {
       const response = await chai.request(server)
-        .delete(`/books/${book.id}`)
+        .delete(`/books/${this.book.id}`)
         .send({ book: {title: 'Updated title'} })
       expect(response.status).to.equal(200)
       expect(response.body).to.deep.equal({})
-      const loadedBook = await Book.findById(book.id)
+      const loadedBook = await Book.findById(this.book.id)
       expect(loadedBook).to.be.null
     })
   })
