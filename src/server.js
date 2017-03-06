@@ -11,7 +11,14 @@ const { getRouter } = require('./routes')
 
 winston.add(winston.transports.File, { filename: `logs/${process.env['NODE_ENV']}.log` })
 
-const app = express()
+
+
+process.on('unhandledRejection', (error, promise) => {
+  console.error('##### Unhandled Promise Rejection: #####')
+  console.error(error && error.stack || error)
+  console.error(promise)
+  throw error
+});
 
 // Don't show the log when in test env
 if(process.env['NODE_ENV'] === 'test') {
@@ -23,6 +30,8 @@ const winstonStream = {
     winston.info(message)
   }
 }
+
+const app = express()
 app.use(morgan('combined', { 'stream': winstonStream }))
 
 // Parse application/json and look for raw text
