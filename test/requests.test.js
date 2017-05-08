@@ -14,44 +14,41 @@ describe('/books requests', function() {
 
   describe('GET /books', function() {
     beforeEach(async function() {
-      await Book.create({title: 'Some title', author: 'Algun author'})
+      await Book.create({ title: 'Some title', author: 'Algun author' })
     })
 
     it('works', async function() {
-      const response = await chai.request(server)
-        .get('/books')
-      expect(response.body.books).to.deep.equal([{title: 'Some title', author: 'Algun author'}])
+      const response = await chai.request(server).get('/books')
+      expect(response.body.books).to.deep.equal([{ title: 'Some title', author: 'Algun author' }])
     })
   })
 
   describe('GET /books/:id', function() {
     beforeEach(async function() {
-      this.book = await Book.create({title: 'Other title', author: 'Other author'})
+      this.book = await Book.create({ title: 'Other title', author: 'Other author' })
     })
 
     it('works', async function() {
-      const response = await chai.request(server)
-        .get(`/books/${this.book.id}`)
-      expect(response.body.book).to.deep.equal({title: 'Other title', author: 'Other author'})
+      const response = await chai.request(server).get(`/books/${this.book.id}`)
+      expect(response.body.book).to.deep.equal({ title: 'Other title', author: 'Other author' })
     })
 
     it('returns status 404 when not found', function(done) {
-      chai.request(server)
-        .get('/books/12345')
-        .end(function(error, response) {
-          expect(error.message).to.equal('Not Found')
-          expect(response.body).to.deep.equal({error: 'NOT_FOUND'})
-          expect(response.status).to.equal(404)
-          done()
-        })
+      chai.request(server).get('/books/12345').end(function(error, response) {
+        expect(error.message).to.equal('Not Found')
+        expect(response.body).to.deep.equal({ error: 'NOT_FOUND' })
+        expect(response.status).to.equal(404)
+        done()
+      })
     })
   })
 
   describe('POST /books (= create)', function() {
     it('works', async function() {
-      const response = await chai.request(server)
+      const response = await chai
+        .request(server)
         .post('/books')
-        .send({ book: {title: 'Creator title', author: 'Creator author'} })
+        .send({ book: { title: 'Creator title', author: 'Creator author' } })
       expect(response.body.book.id).not.to.be.null
       expect(response.body.book).to.deep.include({
         title: 'Creator title',
@@ -67,13 +64,14 @@ describe('/books requests', function() {
 
   describe('PATCH /books/:id (= update)', function() {
     beforeEach(async function() {
-      this.book = await Book.create({title: 'Original title', author: 'Original author'})
+      this.book = await Book.create({ title: 'Original title', author: 'Original author' })
     })
 
     it('works', async function() {
-      const response = await chai.request(server)
+      const response = await chai
+        .request(server)
         .patch(`/books/${this.book.id}`)
-        .send({ book: {title: 'Updated title'} })
+        .send({ book: { title: 'Updated title' } })
       expect(response.status).to.equal(200)
       expect(response.body.book).to.deep.include({
         title: 'Updated title',
@@ -89,13 +87,14 @@ describe('/books requests', function() {
 
   describe('DELETE /books/:id (= destroy)', function() {
     beforeEach(async function() {
-      this.book = await Book.create({title: 'Original title', author: 'Original author'})
+      this.book = await Book.create({ title: 'Original title', author: 'Original author' })
     })
 
     it('works', async function() {
-      const response = await chai.request(server)
+      const response = await chai
+        .request(server)
         .delete(`/books/${this.book.id}`)
-        .send({ book: {title: 'Updated title'} })
+        .send({ book: { title: 'Updated title' } })
       expect(response.status).to.equal(200)
       expect(response.body).to.deep.equal({})
       const loadedBook = await Book.findById(this.book.id)
