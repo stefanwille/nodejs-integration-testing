@@ -6,18 +6,17 @@ function index(request, response) {
   Book.findAll({
     attributes: ['title', 'author']
   }).then(function(books) {
-    response.json({books: books})
+    response.json({ books: books })
   })
 }
 
 function show(request, response) {
   const id = request.params.id
-  Book.findById(id, {attributes: ['title', 'author']}).then(function(book) {
+  Book.findById(id, { attributes: ['title', 'author'] }).then(function(book) {
     if (book) {
-      response.json({book: book})
+      response.json({ book: book })
     } else {
-      response.status(404).json({error: 'NOT_FOUND'})
-
+      response.status(404).json({ error: 'NOT_FOUND' })
     }
   })
 }
@@ -29,7 +28,7 @@ function create(request, response) {
   }
   Book.create(attributes).then(function(book) {
     if (book) {
-      response.json({book: book})
+      response.json({ book: book })
     } else {
       response.status(500)
     }
@@ -51,7 +50,7 @@ function update(request, response) {
       return book.save()
     })
     .then(function() {
-      response.json({book: updatedBook})
+      response.json({ book: updatedBook })
     })
 }
 

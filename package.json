@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "NODE_ENV=development nodemon src/server.js",
-    "test": "NODE_ENV=test mocha"
+    "test": "NODE_ENV=test mocha",
+    "prettier": "prettier --write --print-width 100 --no-semi --single-quote $(find src -name *.js)"
   },
   "repository": {
     "type": "git",
