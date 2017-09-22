@@ -6,7 +6,8 @@
   "scripts": {
     "start": "NODE_ENV=development nodemon src/server.js",
     "test": "NODE_ENV=test mocha",
-    "prettier": "prettier --write --print-width 100 --no-semi --single-quote $(find src test -name *.js)"
+    "prettier": "prettier --write --print-width 100 --no-semi --single-quote src test",
+    "lint": "eslint src test"
   },
   "repository": {
     "type": "git",
@@ -20,10 +21,17 @@
   },
   "homepage": "https://github.com/stefanwille/nodejs-integration-testing#readme",
   "devDependencies": {
-    "nodemon": "^1.11.0",
     "chai": "^3.5.0",
     "chai-http": "^3.0.0",
-    "mocha": "^3.2.0"
+    "eslint": "^4.7.2",
+    "eslint-config-prettier": "^2.5.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-node": "^5.1.1",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "mocha": "^3.2.0",
+    "nodemon": "^1.11.0"
   },
   "dependencies": {
     "body-parser": "^1.16.1",

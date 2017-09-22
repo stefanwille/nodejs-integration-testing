@@ -23,6 +23,7 @@ describe('Book model', function() {
 
   describe('where', function() {
     it('finds only rows for the given condition', async function() {
+      // eslint-disable-next-line  no-unused-vars
       const [book1, book2] = await Promise.all([
         Book.create({ author: 'AAA', title: 'BBB' }),
         Book.create({ author: 'CCC', title: 'DDD' })

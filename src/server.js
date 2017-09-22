@@ -6,7 +6,6 @@ const morgan = require('morgan')
 const config = require('config')
 const winston = require('winston')
 
-const { Book } = require('./models')
 const booksController = require('./booksController')
 
 winston.add(winston.transports.File, {

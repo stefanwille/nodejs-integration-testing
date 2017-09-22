@@ -48,13 +48,12 @@ describe('/books requests', function() {
   })
 
   describe('POST /books (= create)', function() {
-    let book;
-
     it('works', async function() {
       const response = await chai
         .request(server)
         .post('/books')
         .send({ book: { title: 'Creator title', author: 'Creator author' } })
+      // eslint-disable-next-line no-unused-expressions
       expect(response.body.book.id).not.to.be.null
       expect(response.body.book).to.deep.include({
         title: 'Creator title',
@@ -108,6 +107,7 @@ describe('/books requests', function() {
       expect(response.status).to.equal(200)
       expect(response.body).to.deep.equal({})
       const loadedBook = await Book.findById(book.id)
+      // eslint-disable-next-line no-unused-expressions
       expect(loadedBook).to.be.null
     })
   })
