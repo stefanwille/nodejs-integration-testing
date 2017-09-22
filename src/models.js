@@ -1,3 +1,5 @@
+'use strict'
+
 const config = require('config')
 const Sequelize = require('sequelize')
 const winston = require('winston')

@@ -1,3 +1,5 @@
+'use strict'
+
 process.env.NODE_ENV = 'test'
 
 const chai = require('chai')
@@ -24,12 +26,14 @@ describe('/books requests', function() {
   })
 
   describe('GET /books/:id', function() {
+    let book;
+
     beforeEach(async function() {
-      this.book = await Book.create({ title: 'Other title', author: 'Other author' })
+      book = await Book.create({ title: 'Other title', author: 'Other author' })
     })
 
     it('works', async function() {
-      const response = await chai.request(server).get(`/books/${this.book.id}`)
+      const response = await chai.request(server).get(`/books/${book.id}`)
       expect(response.body.book).to.deep.equal({ title: 'Other title', author: 'Other author' })
     })
 
@@ -44,6 +48,8 @@ describe('/books requests', function() {
   })
 
   describe('POST /books (= create)', function() {
+    let book;
+
     it('works', async function() {
       const response = await chai
         .request(server)
@@ -63,22 +69,24 @@ describe('/books requests', function() {
   })
 
   describe('PATCH /books/:id (= update)', function() {
+    let book;
+
     beforeEach(async function() {
-      this.book = await Book.create({ title: 'Original title', author: 'Original author' })
+      book = await Book.create({ title: 'Original title', author: 'Original author' })
     })
 
     it('works', async function() {
       const response = await chai
         .request(server)
-        .patch(`/books/${this.book.id}`)
+        .patch(`/books/${book.id}`)
         .send({ book: { title: 'Updated title' } })
       expect(response.status).to.equal(200)
       expect(response.body.book).to.deep.include({
         title: 'Updated title',
         author: 'Original author'
       })
-      await this.book.reload()
-      expect(this.book).to.deep.include({
+      await book.reload()
+      expect(book).to.deep.include({
         title: 'Updated title',
         author: 'Original author'
       })
@@ -86,18 +94,20 @@ describe('/books requests', function() {
   })
 
   describe('DELETE /books/:id (= destroy)', function() {
+    let book;
+
     beforeEach(async function() {
-      this.book = await Book.create({ title: 'Original title', author: 'Original author' })
+      book = await Book.create({ title: 'Original title', author: 'Original author' })
     })
 
     it('works', async function() {
       const response = await chai
         .request(server)
-        .delete(`/books/${this.book.id}`)
+        .delete(`/books/${book.id}`)
         .send({ book: { title: 'Updated title' } })
       expect(response.status).to.equal(200)
       expect(response.body).to.deep.equal({})
-      const loadedBook = await Book.findById(this.book.id)
+      const loadedBook = await Book.findById(book.id)
       expect(loadedBook).to.be.null
     })
   })

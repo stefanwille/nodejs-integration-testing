@@ -7,7 +7,7 @@ const config = require('config')
 const winston = require('winston')
 
 const { Book } = require('./models')
-const { getRouter } = require('./routes')
+const booksController = require('./booksController')
 
 winston.add(winston.transports.File, {
   filename: `logs/${process.env['NODE_ENV']}.log`
@@ -38,7 +38,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.text())
 
-app.use(getRouter())
+app.use(booksController.getRouter())
 
 const port = config.port
 app.listen(port)
