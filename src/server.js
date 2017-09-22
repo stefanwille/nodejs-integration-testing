@@ -34,11 +34,9 @@ const winstonStream = {
 const app = express()
 app.use(morgan('combined', { stream: winstonStream }))
 
-// Parse application/json and look for raw text
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.text())
-app.use(bodyParser.json({ type: 'application/json' }))
 
 app.use(getRouter())
 
