@@ -6,7 +6,7 @@ const { Book } = require('./models')
 
 function index(request, response) {
   Book.findAll({
-    attributes: ['title', 'author']
+    attributes: ['title', 'author'],
   }).then(function(books) {
     response.json({ books: books })
   })
@@ -26,7 +26,7 @@ function show(request, response) {
 function create(request, response) {
   const attributes = {
     title: request.body.book.title,
-    author: request.body.book.author
+    author: request.body.book.author,
   }
   Book.create(attributes).then(function(book) {
     if (book) {
@@ -82,5 +82,5 @@ function getRouter() {
 }
 
 module.exports = {
-  getRouter
+  getRouter,
 }

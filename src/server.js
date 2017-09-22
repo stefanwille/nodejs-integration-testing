@@ -9,7 +9,7 @@ const winston = require('winston')
 const booksController = require('./booksController')
 
 winston.add(winston.transports.File, {
-  filename: `logs/${process.env['NODE_ENV']}.log`
+  filename: `logs/${process.env['NODE_ENV']}.log`,
 })
 
 process.on('unhandledRejection', (error, promise) => {
@@ -27,7 +27,7 @@ if (process.env['NODE_ENV'] === 'test') {
 const winstonStream = {
   write: function(message, encoding) {
     winston.info(message)
-  }
+  },
 }
 
 const app = express()

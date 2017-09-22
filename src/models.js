@@ -11,23 +11,23 @@ const logToWinston = function(str) {
 const databaseUrl = config.databaseUrl
 const sequelize = new Sequelize(databaseUrl, {
   logging: logToWinston,
-  underscoredAll: true
+  underscoredAll: true,
 })
 
 const Book = sequelize.define(
   'books',
   {
     title: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING,
     },
 
     author: {
       type: Sequelize.STRING,
-      allowNull: false
-    }
+      allowNull: false,
+    },
   },
   {
-    freezeTableName: true
+    freezeTableName: true,
   }
 )
 
@@ -42,5 +42,5 @@ function syncDatabase() {
 module.exports = {
   resetDatabase,
   syncDatabase,
-  Book
+  Book,
 }

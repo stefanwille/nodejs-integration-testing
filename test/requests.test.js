@@ -26,7 +26,7 @@ describe('/books requests', function() {
   })
 
   describe('GET /books/:id', function() {
-    let book;
+    let book
 
     beforeEach(async function() {
       book = await Book.create({ title: 'Other title', author: 'Other author' })
@@ -38,12 +38,15 @@ describe('/books requests', function() {
     })
 
     it('returns status 404 when not found', function(done) {
-      chai.request(server).get('/books/12345').end(function(error, response) {
-        expect(error.message).to.equal('Not Found')
-        expect(response.body).to.deep.equal({ error: 'NOT_FOUND' })
-        expect(response.status).to.equal(404)
-        done()
-      })
+      chai
+        .request(server)
+        .get('/books/12345')
+        .end(function(error, response) {
+          expect(error.message).to.equal('Not Found')
+          expect(response.body).to.deep.equal({ error: 'NOT_FOUND' })
+          expect(response.status).to.equal(404)
+          done()
+        })
     })
   })
 
@@ -57,18 +60,18 @@ describe('/books requests', function() {
       expect(response.body.book.id).not.to.be.null
       expect(response.body.book).to.deep.include({
         title: 'Creator title',
-        author: 'Creator author'
+        author: 'Creator author',
       })
       const loadedBook = await Book.findById(response.body.book.id)
       expect(loadedBook).to.deep.include({
         title: 'Creator title',
-        author: 'Creator author'
+        author: 'Creator author',
       })
     })
   })
 
   describe('PATCH /books/:id (= update)', function() {
-    let book;
+    let book
 
     beforeEach(async function() {
       book = await Book.create({ title: 'Original title', author: 'Original author' })
@@ -82,18 +85,18 @@ describe('/books requests', function() {
       expect(response.status).to.equal(200)
       expect(response.body.book).to.deep.include({
         title: 'Updated title',
-        author: 'Original author'
+        author: 'Original author',
       })
       await book.reload()
       expect(book).to.deep.include({
         title: 'Updated title',
-        author: 'Original author'
+        author: 'Original author',
       })
     })
   })
 
   describe('DELETE /books/:id (= destroy)', function() {
-    let book;
+    let book
 
     beforeEach(async function() {
       book = await Book.create({ title: 'Original title', author: 'Original author' })

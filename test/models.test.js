@@ -26,7 +26,7 @@ describe('Book model', function() {
       // eslint-disable-next-line  no-unused-vars
       const [book1, book2] = await Promise.all([
         Book.create({ author: 'AAA', title: 'BBB' }),
-        Book.create({ author: 'CCC', title: 'DDD' })
+        Book.create({ author: 'CCC', title: 'DDD' }),
       ])
       const bookCount = await Book.count()
       expect(bookCount).to.equal(2)
@@ -46,8 +46,8 @@ describe('Book model', function() {
             message: 'author cannot be null',
             type: 'notNull Violation',
             path: 'author',
-            value: null
-          }
+            value: null,
+          },
         ])
       }
     })
