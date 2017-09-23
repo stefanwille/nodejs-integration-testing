@@ -23,7 +23,6 @@
   "homepage": "https://github.com/stefanwille/nodejs-integration-testing#readme",
   "devDependencies": {
     "chai": "^3.5.0",
-    "chai-http": "^3.0.0",
     "eslint": "^4.7.2",
     "eslint-config-prettier": "^2.5.0",
     "eslint-config-standard": "^10.2.1",
@@ -33,7 +32,8 @@
     "eslint-plugin-standard": "^3.0.1",
     "mocha": "^3.2.0",
     "nodemon": "^1.11.0",
-    "prettier": "^1.7.0"
+    "prettier": "^1.7.0",
+    "supertest": "^3.0.0"
   },
   "dependencies": {
     "body-parser": "^1.16.1",

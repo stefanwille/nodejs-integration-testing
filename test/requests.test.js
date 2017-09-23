@@ -2,12 +2,10 @@
 
 const chai = require('chai')
 const expect = chai.expect
-const chaiHttp = require('chai-http')
+const request = require('supertest')
 
 const server = require('../src/server')
 const { resetDatabase, Book } = require('../src/models')
-
-chai.use(chaiHttp)
 
 describe('/books requests', function() {
   beforeEach(resetDatabase)
@@ -18,7 +16,7 @@ describe('/books requests', function() {
     })
 
     it('works', async function() {
-      const response = await chai.request(server).get('/books')
+      const response = await request(server).get('/books')
       expect(response.body.books).to.deep.equal([{ title: 'Some title', author: 'Algun author' }])
     })
   })
@@ -31,27 +29,20 @@ describe('/books requests', function() {
     })
 
     it('works', async function() {
-      const response = await chai.request(server).get(`/books/${book.id}`)
+      const response = await request(server).get(`/books/${book.id}`)
       expect(response.body.book).to.deep.equal({ title: 'Other title', author: 'Other author' })
     })
 
-    it('returns status 404 when not found', function(done) {
-      chai
-        .request(server)
-        .get('/books/12345')
-        .end(function(error, response) {
-          expect(error.message).to.equal('Not Found')
-          expect(response.body).to.deep.equal({ error: 'NOT_FOUND' })
-          expect(response.status).to.equal(404)
-          done()
-        })
+    it('returns status 404 when not found', async function() {
+      const response = await request(server).get('/books/12345')
+      expect(response.status).to.equal(404)
+      expect(response.body).to.deep.equal({ error: 'NOT_FOUND' })
     })
   })
 
   describe('POST /books (= create)', function() {
     it('works', async function() {
-      const response = await chai
-        .request(server)
+      const response = await request(server)
         .post('/books')
         .send({ book: { title: 'Creator title', author: 'Creator author' } })
       // eslint-disable-next-line no-unused-expressions
@@ -76,8 +67,7 @@ describe('/books requests', function() {
     })
 
     it('works', async function() {
-      const response = await chai
-        .request(server)
+      const response = await request(server)
         .patch(`/books/${book.id}`)
         .send({ book: { title: 'Updated title' } })
       expect(response.status).to.equal(200)
@@ -101,8 +91,7 @@ describe('/books requests', function() {
     })
 
     it('works', async function() {
-      const response = await chai
-        .request(server)
+      const response = await request(server)
         .delete(`/books/${book.id}`)
         .send({ book: { title: 'Updated title' } })
       expect(response.status).to.equal(200)
