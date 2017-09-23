@@ -1,86 +1,73 @@
-'use strict'
+'use strict';
 
-const express = require('express')
-const R = require('ramda')
-const { Book } = require('./models')
+const express = require('express');
+const R = require('ramda');
+const { Book } = require('./models');
 
-function index(request, response) {
-  Book.findAll({
+async function index(request, response) {
+  const books = await Book.findAll({
     attributes: ['title', 'author'],
-  }).then(function(books) {
-    response.json({ books: books })
-  })
+  });
+  response.json({ books: books });
 }
 
-function show(request, response) {
-  const id = request.params.id
-  Book.findById(id, { attributes: ['title', 'author'] }).then(function(book) {
-    if (book) {
-      response.json({ book: book })
-    } else {
-      response.status(404).json({ error: 'NOT_FOUND' })
-    }
-  })
+async function show(request, response) {
+  const id = request.params.id;
+  const book = await Book.findById(id, { attributes: ['title', 'author'] });
+  if (book) {
+    response.json({ book: book });
+  } else {
+    response.status(404).json({ error: 'NOT_FOUND' });
+  }
 }
 
-function create(request, response) {
+async function create(request, response) {
   const attributes = {
     title: request.body.book.title,
     author: request.body.book.author,
+  };
+  const book = await Book.create(attributes);
+  if (book) {
+    response.json({ book });
+  } else {
+    response.status(500);
   }
-  Book.create(attributes).then(function(book) {
-    if (book) {
-      response.json({ book: book })
-    } else {
-      response.status(500)
-    }
-  })
 }
 
-function update(request, response) {
-  let updatedBook
-  Book.findById(request.params.id)
-    .then(function(book) {
-      if (!book) {
-        response.status(404)
-        return
-      }
+async function update(request, response) {
+  const book = await Book.findById(request.params.id);
+  if (!book) {
+    response.status(404);
+    return;
+  }
 
-      const attributes = R.pick(['title', 'author'], request.body.book)
-      Object.assign(book, attributes)
-      updatedBook = book
-      return book.save()
-    })
-    .then(function() {
-      response.json({ book: updatedBook })
-    })
+  const attributes = R.pick(['title', 'author'], request.body.book);
+  Object.assign(book, attributes);
+  await book.save();
+  response.json({ book });
 }
 
-function destroy(request, response) {
-  Book.findById(request.params.id)
-    .then(function(book) {
-      if (!book) {
-        response.status(404)
-        return
-      }
+async function destroy(request, response) {
+  const book = await Book.findById(request.params.id);
+  if (!book) {
+    response.status(404);
+    return;
+  }
 
-      return book.destroy()
-    })
-    .then(function() {
-      response.json({})
-    })
+  await book.destroy();
+  response.json({});
 }
 
 function getRouter() {
-  const router = express.Router()
-  router.get('/books', index)
-  router.get('/books/:id', show)
-  router.post('/books', create)
-  router.patch('/books/:id', update)
-  router.delete('/books/:id', destroy)
-  return router
+  const router = express.Router();
+  router.get('/books', index);
+  router.get('/books/:id', show);
+  router.post('/books', create);
+  router.patch('/books/:id', update);
+  router.delete('/books/:id', destroy);
+  return router;
 }
 
 module.exports = {
   getRouter,
-}
+};
