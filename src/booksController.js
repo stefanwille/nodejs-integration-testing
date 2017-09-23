@@ -22,10 +22,7 @@ async function show(request, response) {
 }
 
 async function create(request, response) {
-  const attributes = {
-    title: request.body.book.title,
-    author: request.body.book.author,
-  };
+  const attributes = R.pick(['title', 'author'], request.body.book);
   const book = await Book.create(attributes);
   if (book) {
     response.json({ book });
