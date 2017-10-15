@@ -1,18 +1,16 @@
-'use strict'
-
-const config = require('config')
-const Sequelize = require('sequelize')
-const winston = require('winston')
+const config = require('config');
+const Sequelize = require('sequelize');
+const winston = require('winston');
 
 const logToWinston = function(str) {
-  winston.info(str)
-}
+  winston.info(str);
+};
 
-const databaseUrl = config.databaseUrl
+const databaseUrl = config.databaseUrl;
 const sequelize = new Sequelize(databaseUrl, {
   logging: logToWinston,
   underscoredAll: true,
-})
+});
 
 const Book = sequelize.define(
   'books',
@@ -29,18 +27,18 @@ const Book = sequelize.define(
   {
     freezeTableName: true,
   }
-)
+);
 
 function resetDatabase() {
-  return Book.truncate()
+  return Book.truncate();
 }
 
 function syncDatabase() {
-  return Book.sync({ force: true })
+  return Book.sync({ force: true });
 }
 
 module.exports = {
   resetDatabase,
   syncDatabase,
   Book,
-}
+};

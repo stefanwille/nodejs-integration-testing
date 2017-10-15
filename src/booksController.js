@@ -1,5 +1,3 @@
-'use strict';
-
 const express = require('express');
 const R = require('ramda');
 const { Book } = require('./models');
